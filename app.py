@@ -8,7 +8,18 @@ import requests
 #   Proyecto de finalizacion - Bootcamp Ciberseguridad
 # ============================================================
 
-app = Flask(__name__, static_folder='Estilos', static_url_path='/Estilos')
+from flask import Flask, render_template, request, jsonify, send_from_directory
+import os
+
+app = Flask(__name__)
+
+@app.route('/Estilos/<path:filename>')
+def estilos(filename):
+    return send_from_directory('Estilos', filename)
+
+@app.route('/Funcion/<path:filename>')
+def funcion(filename):
+    return send_from_directory('Funcion', filename)
 
 # ---------- CONFIGURACION VIRUSTOTAL ----------
 # Aqui si o si toca reemplazar esto con la API Key de virustotal.com
