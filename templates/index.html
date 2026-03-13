@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CiberAlerta Cundinamarca</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/Estilos/Diseño.css">
+</head>
+<body>
+<input type="file" id="inputArchivo">
+
+<div class="ventana">
+
+    <!-- HEADER + NAVBAR -->
+    <div class="app-header">
+        <div class="logo-wrap">
+            <img src="/Estilos/logo.png" alt="Logo CiberAlerta" class="logo-img">
+        </div>
+        <div class="app-titulo">🛡️ CiberAlerta Cundinamarca</div>
+        <div class="app-subtitulo">Protegiendo a nuestra comunidad de estafas digitales</div>
+        <div class="navbar">
+            <button class="nav-btn activo" onclick="cambiarPantalla('mensajes', this)">
+        💬 Analizar Mensaje
+      </button>
+      <button class="nav-btn" onclick="cambiarPantalla('archivos', this)">
+        📁 Analizar Archivo
+      </button>
+      <button class="nav-btn" onclick="cambiarPantalla('antivirus', this)">
+        🔬 Antivirus Activos
+      </button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- PANTALLA 1: MENSAJES                  -->
+  <!-- ══════════════════════════════════════ -->
+   <div class="pantalla activa" id="pantalla-mensajes">
+    <div class="banda-info">
+      💬 ¿Recibiste un mensaje sospechoso? Pégalo aquí y te decimos si es peligroso.
+    </div>
+    <div class="area-principal">
+      <span class="label-campo">Escribe o pega el mensaje aquí:</span>
+      <textarea id="campo" placeholder="Ejemplo: FELICITACIONES ganaste $5.000.000 pesos. Confirma tu cédula URGENTE hoy: bit.ly/premio123"></textarea>
+      <div class="fila-botones">
+      <button class="btn-primario" onclick="analizarMensaje()">🔍 Analizar Mensaje</button>
+      <button class="btn-secundario" onclick="limpiarMensaje()">🗑️ Limpiar</button>
+      </div>
+
+      <div class="ejemplos-titulo">Probar con ejemplos:</div>
+      <div class="ejemplos-fila">
+        <div class="chip" onclick="cargar('FELICITACIONES! Has sido SELECCIONADO ganador de $5.000.000 pesos del Gobierno. Confirma tu cedula URGENTE antes de que caduque hoy: bit.ly/gobierno-premio2024')">🔴 Estafa de premio</div>
+        <div class="chip" onclick="cargar('Estimado cliente, su cuenta ha sido BLOQUEADA. Ingrese su clave y contrasena para verificar: http://bancol0mbia-seguro.com/verificar')">🔴 Falso banco</div>
+        <div class="chip" onclick="cargar('Hola, le escribo del SENA. Hay un subsidio disponible. Confirme sus datos: www.sena-subsidios.info')">🟡 Mensaje dudoso</div>
+        <div class="chip" onclick="cargar('Hola mama, soy Juan. Hoy llego a las 6pm. Necesitas que traiga algo del mercado?')">🟢 Mensaje seguro</div>
+      </div>
+    </div>
+    <div class="resultado-area" id="resultado-mensaje"></div>
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- PANTALLA 2: ARCHIVOS                  -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="pantalla" id="pantalla-archivos">
+    <div class="banda-info">
+      📁 Sube un archivo sospechoso y lo analizamos con VirusTotal en tiempo real.
+    </div>
+    <div class="area-principal">
+
+      <!-- Zona arrastrar y soltar -->
+      <div class="zona-drop" id="zonaDrop"
+           onclick="document.getElementById('inputArchivo').click()"
+           ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dragDrop(event)">
+        <div class="zona-drop-icono">📂</div>
+        <div class="zona-drop-titulo">Arrastra el archivo aquí o haz clic para seleccionarlo</div>
+        <div class="zona-drop-sub">Formatos: .exe .pdf .docx .zip .apk · Máx. 32MB</div>
+      </div>
+
+      <!-- Info archivo seleccionado -->
+      <div class="archivo-seleccionado" id="archivoSeleccionado">
+        <div class="archivo-icono" id="archivoIcono">📄</div>
+        <div class="archivo-info">
+          <div class="archivo-nombre" id="archivoNombre">—</div>
+          <div class="archivo-tamano" id="archivoTamano">—</div>
+        </div>
+      </div>
+
+      <!-- Barra de progreso -->
+      <div class="progreso-wrap" id="progresoWrap">
+        <div class="progreso-label" id="progresoLabel">Enviando a VirusTotal...</div>
+        <div class="progreso-bar-bg">
+          <div class="progreso-bar" id="progresoBar"></div>
+        </div>
+      </div>
+
+      <div class="fila-botones">
+        <button class="btn-primario" id="btnAnalizarArchivo" onclick="analizarArchivo()" disabled
+                style="opacity:0.5; cursor:not-allowed;">
+          🔬 Analizar con VirusTotal
+        </button>
+        <button class="btn-secundario" onclick="limpiarArchivo()">🗑️ Limpiar</button>
+      </div>
+    </div>
+
+    <div class="resultado-archivo" id="resultado-archivo" style="margin: 0 26px 24px;"></div>
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- PANTALLA 3: ANTIVIRUS                 -->
+  <!-- ══════════════════════════════════════ -->
+   <div class="pantalla" id="pantalla-antivirus">
+    <div class="av-header">
+      🔬 VirusTotal utiliza más de 70 motores antivirus para analizar enlaces y archivos en tiempo real.
+    </div>
+
+    <!-- Estadísticas generales -->
+    <div class="av-stats">
+      <div class="av-stat-card">
+        <div class="av-stat-num" style="color:#1565C0;">70+</div>
+        <div class="av-stat-label">Motores activos</div>
+      </div>
+      <div class="av-stat-card">
+        <div class="av-stat-num" style="color:#2E7D32;">99%</div>
+        <div class="av-stat-label">Tasa de detección</div>
+      </div>
+      <div class="av-stat-card">
+        <div class="av-stat-num" style="color:#E65100;">⚡</div>
+        <div class="av-stat-label">Análisis en tiempo real</div>
+      </div>
+    </div>
+
+    <!-- Lista de antivirus -->
+    <div class="av-grid">
+      <div class="av-card">
+        <div class="av-logo">🔵</div>
+        <div><div class="av-nombre">Kaspersky</div><div class="av-tipo">Motor de detección avanzada</div></div>
+        <span class="av-badge activo">✅ Activo</span>
+      </div>
+      <div class="av-card">
+        <div class="av-logo">🟠</div>
+        <div><div class="av-nombre">BitDefender</div><div class="av-tipo">Análisis heurístico</div></div>
+        <span class="av-badge activo">✅ Activo</span>
+      </div>
+      <div class="av-card">
+        <div class="av-logo">🔴</div>
+        <div><div class="av-nombre">McAfee</div><div class="av-tipo">Detección de malware</div></div>
+        <span class="av-badge activo">✅ Activo</span>
+      </div>
+      <div class="av-card">
+        <div class="av-logo">🟢</div>
+        <div><div class="av-nombre">ESET</div><div class="av-tipo">NOD32 Antivirus Engine</div></div>
+        <span class="av-badge activo">✅ Activo</span>
+      </div>
+      <div class="av-card">
+        <div class="av-logo">🔷</div>
+        <div><div class="av-nombre">Avast</div><div class="av-tipo">Motor de análisis web</div></div>
+        <span class="av-badge activo">✅ Activo</span>
+      </div>
+      <div class="av-card">
+        <div class="av-logo">🟡</div>
+        <div><div class="av-nombre">Symantec</div><div class="av-tipo">Norton Security Engine</div></div>
+        <span class="av-badge activo">✅ Activo</span>
+      </div>
+      <div class="av-card">
+        <div class="av-logo">⚫</div>
+        <div><div class="av-nombre">Malwarebytes</div><div class="av-tipo">Anti-malware avanzado</div></div>
+        <span class="av-badge activo">✅ Activo</span>
+      </div>
+      <div class="av-card">
+        <div class="av-logo">🔵</div>
+        <div><div class="av-nombre">Microsoft Defender</div><div class="av-tipo">Windows Security Engine</div></div>
+        <span class="av-badge activo">✅ Activo</span>
+      </div>
+      <div class="av-card">
+        <div class="av-logo">🟤</div>
+        <div><div class="av-nombre">Trend Micro</div><div class="av-tipo">Cloud-based detection</div></div>
+        <span class="av-badge activo">✅ Activo</span>
+      </div>
+      <div class="av-card">
+        <div class="av-logo">🟣</div>
+        <div><div class="av-nombre">CrowdStrike Falcon</div><div class="av-tipo">AI Threat Intelligence</div></div>
+        <span class="av-badge motor">🔬 Motor IA</span>
+      </div>
+      <div class="av-card">
+        <div class="av-logo">🔵</div>
+        <div><div class="av-nombre">Sophos</div><div class="av-tipo">Intercept X Engine</div></div>
+        <span class="av-badge activo">✅ Activo</span>
+      </div>
+      <div class="av-card">
+        <div class="av-logo">🟠</div>
+        <div><div class="av-nombre">F-Secure</div><div class="av-tipo">DeepGuard Technology</div></div>
+        <span class="av-badge activo">✅ Activo</span>
+      </div>
+    </div>
+
+    <div class="av-nota">
+      💡 Estos son solo 12 de los más de 70 motores que usa VirusTotal. Cuando analizas un enlace o archivo, <strong>todos ellos trabajan al mismo tiempo</strong> para darte el resultado más preciso posible.
+    </div>
+  </div>
+
+  <div class="app-pie">Grupo 5 · Proyecto de Ciberseguridad · Bootcamp · Cundinamarca</div>
+</div>
+
+<script>
+  // ── NAVEGACIÓN ──
+  function cambiarPantalla(id, btn) {
+    document.querySelectorAll('.pantalla').forEach(p => p.classList.remove('activa'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('activo'));
+    document.getElementById('pantalla-' + id).classList.add('activa');
+    btn.classList.add('activo');
+  }
+
+  // ══════════════════════════════════════
+  // PANTALLA 1 — MENSAJES
+  // ══════════════════════════════════════
+  function cargar(texto) {
+    document.getElementById('campo').value = texto;
+    analizarMensaje();
+  }
+
+  function limpiarMensaje() {
+    document.getElementById('campo').value = '';
+    const res = document.getElementById('resultado-mensaje');
+    res.style.display = 'none'; res.innerHTML = '';
+  }
+
+  async function analizarMensaje() {
+    const texto = document.getElementById('campo').value.trim();
+    if (!texto) return;
+    const res = document.getElementById('resultado-mensaje');
+    res.style.display = 'block';
+    res.innerHTML = '<div class="cargando">🔍 Analizando mensaje...</div>';
+    try {
+      const response = await fetch('/analizar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ texto })
+      });
+      const data = await response.json();
+      mostrarResultadoMensaje(data);
+    } catch (e) {
+      res.innerHTML = '<div class="cargando">❌ Error al analizar. Verifica que el servidor esté corriendo.</div>';
+    }
+  }
+
+  function mostrarResultadoMensaje(data) {
+    const config = {
+      peligroso: { bg:'#FFEBEE', borde:'#C62828', tc:'#B71C1C', emoji:'🚨',
+        titulo:'¡PELIGRO! Este mensaje es una ESTAFA',
+        semColor:'#EF5350', semTexto:'PELIGROSO — No respondas ni hagas clic' },
+      sospechoso: { bg:'#FFF3E0', borde:'#E65100', tc:'#BF360C', emoji:'⚠️',
+        titulo:'¡CUIDADO! Este mensaje es SOSPECHOSO',
+        semColor:'#FFA726', semTexto:'SOSPECHOSO — Verifica antes de actuar' },
+      seguro: { bg:'#E8F5E9', borde:'#2E7D32', tc:'#1B5E20', emoji:'✅',
+        titulo:'Este mensaje parece SEGURO',
+        semColor:'#66BB6A', semTexto:'SEGURO — No se detectaron amenazas' }
+    };
+    const c = config[data.nivel];
+    const razones = data.razones.map(r => `<div class="item">• ${r}</div>`).join('');
+    const consejos = data.consejos.slice(0,5).map(x => `<div class="item">${x}</div>`).join('');
+
+    // Bloque VirusTotal
+    let vtBloque = '';
+    if (data.virustotal && !data.virustotal.error) {
+      const vt = data.virustotal;
+      const vtColor = vt.veredicto === 'peligroso' ? '#B71C1C'
+                    : vt.veredicto === 'sospechoso' ? '#E65100' : '#2E7D32';
+      const vtEmoji = vt.veredicto === 'peligroso' ? '🔴'
+                    : vt.veredicto === 'sospechoso' ? '🟡' : '🟢';
+      vtBloque = `
+        <div class="vt-bloque" style="border-left:4px solid ${vtColor};">
+          <div class="vt-titulo" style="color:${vtColor};">🔬 Verificación VirusTotal</div>
+          <div class="vt-fila">${vtEmoji} Veredicto: <strong style="color:${vtColor};text-transform:uppercase;">${vt.veredicto}</strong></div>
+          <div class="vt-fila">🛡️ <strong>${vt.maliciosos}</strong> de <strong>${vt.total}</strong> antivirus lo detectaron como malicioso</div>
+          <div class="vt-fila">⚠️ Sospechosos: <strong>${vt.sospechosos}</strong></div>
+          <div class="vt-url">🔗 ${vt.url}</div>
+        </div>`;
+    }
+
+    const res = document.getElementById('resultado-mensaje');
+    res.style.animation = 'none'; res.offsetHeight; res.style.animation = 'slideUp 0.35s ease both';
+    res.innerHTML = `
+      <div class="resultado-caja" style="background:${c.bg}; border-color:${c.borde};">
+        <div class="resultado-top">
+          <div class="resultado-emoji">${c.emoji}</div>
+          <div>
+            <div class="resultado-titulo" style="color:${c.tc}">${c.titulo}</div>
+            <div class="semaforo">
+              <div class="semaforo-dot" style="background:${c.semColor}"></div>
+              <span style="color:${c.tc}">${c.semTexto}</span>
+            </div>
+          </div>
+        </div>
+        <div class="seccion-label" style="color:${c.tc}">${data.nivel !== 'seguro' ? '¿Por qué es peligroso?' : 'Análisis'}</div>
+        ${razones}
+        <div class="seccion-label" style="color:${c.tc}; margin-top:16px;">¿Qué debes hacer?</div>
+        ${consejos}
+        ${vtBloque}
+      </div>`;
+  }
+
+  // ══════════════════════════════════════
+  // PANTALLA 2 — ARCHIVOS
+  // ══════════════════════════════════════
+  const iconosPorExtension = {
+    pdf: '📕', exe: '⚙️', zip: '🗜️', rar: '🗜️',
+    docx: '📘', doc: '📘', xlsx: '📗', apk: '📱',
+    jpg: '🖼️', png: '🖼️', mp4: '🎬', default: '📄'
+  };
+
+  let archivoActual = null;
+
+  document.getElementById('inputArchivo').addEventListener('change', function(e) {
+    if (e.target.files[0]) seleccionarArchivo(e.target.files[0]);
+  });
+
+  function dragOver(e) { e.preventDefault(); document.getElementById('zonaDrop').classList.add('dragover'); }
+  function dragLeave(e) { document.getElementById('zonaDrop').classList.remove('dragover'); }
+  function dragDrop(e) {
+    e.preventDefault();
+    document.getElementById('zonaDrop').classList.remove('dragover');
+    if (e.dataTransfer.files[0]) seleccionarArchivo(e.dataTransfer.files[0]);
+  }
+
+  function seleccionarArchivo(file) {
+    archivoActual = file;
+    const ext = file.name.split('.').pop().toLowerCase();
+    const icono = iconosPorExtension[ext] || iconosPorExtension.default;
+    const tamano = file.size < 1024*1024
+      ? (file.size/1024).toFixed(1) + ' KB'
+      : (file.size/1024/1024).toFixed(1) + ' MB';
+
+    document.getElementById('archivoIcono').textContent = icono;
+    document.getElementById('archivoNombre').textContent = file.name;
+    document.getElementById('archivoTamano').textContent = tamano + ' · ' + ext.toUpperCase();
+    document.getElementById('archivoSeleccionado').style.display = 'flex';
+    document.getElementById('zonaDrop').style.display = 'none';
+
+    const btn = document.getElementById('btnAnalizarArchivo');
+    btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer';
+    document.getElementById('resultado-archivo').style.display = 'none';
+  }
+
+  async function analizarArchivo() {
+    if (!archivoActual) return;
+    const progreso = document.getElementById('progresoWrap');
+    const bar = document.getElementById('progresoBar');
+    const label = document.getElementById('progresoLabel');
+    const res = document.getElementById('resultado-archivo');
+
+    progreso.style.display = 'block'; res.style.display = 'none';
+    label.textContent = 'Enviando archivo a VirusTotal...'; bar.style.width = '0%';
+
+    // Animación de progreso
+    let pct = 0;
+    const intervalo = setInterval(() => {
+      pct += Math.random() * 15;
+      if (pct >= 90) { pct = 90; clearInterval(intervalo); }
+      bar.style.width = pct + '%';
+      if (pct > 30) label.textContent = 'Analizando con 70+ motores antivirus...';
+      if (pct > 60) label.textContent = 'Recopilando resultados...';
+    }, 300);
+
+    try {
+      const formData = new FormData();
+      formData.append('archivo', archivoActual);
+      const response = await fetch('/analizar-archivo', { method: 'POST', body: formData });
+      const data = await response.json();
+      clearInterval(intervalo);
+      bar.style.width = '100%';
+      label.textContent = '✅ Análisis completado';
+      setTimeout(() => {
+        progreso.style.display = 'none';
+        mostrarResultadoArchivo(data);
+      }, 500);
+    } catch(e) {
+      clearInterval(intervalo);
+      progreso.style.display = 'none';
+      res.style.display = 'block';
+      res.style.background = '#FFEBEE'; res.style.borderColor = '#C62828';
+      res.innerHTML = '<div style="color:#B71C1C; font-weight:700; padding:10px;">❌ Error al analizar. Verifica que el servidor esté corriendo.</div>';
+    }
+  }
+
+  function mostrarResultadoArchivo(data) {
+    const res = document.getElementById('resultado-archivo');
+    const vt = data.virustotal;
+    if (!vt || vt.error) {
+      res.style.display = 'block'; res.style.background = '#FFF3E0'; res.style.borderColor = '#E65100';
+      res.innerHTML = `<div style="color:#E65100; font-weight:700; padding:10px;">⚠️ ${vt?.error || 'No se pudo analizar el archivo'}</div>`;
+      return;
+    }
+    const esPeligroso = vt.maliciosos >= 3;
+    const esSospechoso = vt.maliciosos >= 1 || vt.sospechosos >= 2;
+    const bg = esPeligroso ? '#FFEBEE' : esSospechoso ? '#FFF3E0' : '#E8F5E9';
+    const borde = esPeligroso ? '#C62828' : esSospechoso ? '#E65100' : '#2E7D32';
+    const tc = esPeligroso ? '#B71C1C' : esSospechoso ? '#BF360C' : '#1B5E20';
+    const emoji = esPeligroso ? '🚨' : esSospechoso ? '⚠️' : '✅';
+    const titulo = esPeligroso ? '¡ARCHIVO PELIGROSO! No lo abras.' : esSospechoso ? '¡ARCHIVO SOSPECHOSO! Procede con cuidado.' : 'Archivo parece LIMPIO';
+
+    res.style.display = 'block'; res.style.background = bg; res.style.borderColor = borde;
+    res.innerHTML = `
+      <div class="resultado-archivo-top">
+        <div style="font-size:40px;">${emoji}</div>
+        <div>
+          <div style="font-size:17px; font-weight:900; color:${tc};">${titulo}</div>
+          <div class="semaforo" style="margin-top:8px;">
+            <div class="semaforo-dot" style="background:${borde}"></div>
+            <span style="color:${tc}; font-size:12px;">${vt.veredicto?.toUpperCase()} — Análisis VirusTotal</span>
+          </div>
+        </div>
+      </div>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-numero" style="color:#B71C1C;">${vt.maliciosos}</div>
+          <div class="stat-label">Detecciones maliciosas</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-numero" style="color:#E65100;">${vt.sospechosos}</div>
+          <div class="stat-label">Sospechosos</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-numero" style="color:#2E7D32;">${vt.total - vt.maliciosos - vt.sospechosos}</div>
+          <div class="stat-label">Sin amenazas</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-numero" style="color:#1565C0;">${vt.total}</div>
+          <div class="stat-label">Total antivirus</div>
+        </div>
+      </div>`;
+  }
+
+  function limpiarArchivo() {
+    archivoActual = null;
+    document.getElementById('zonaDrop').style.display = 'block';
+    document.getElementById('archivoSeleccionado').style.display = 'none';
+    document.getElementById('progresoWrap').style.display = 'none';
+    document.getElementById('resultado-archivo').style.display = 'none';
+    document.getElementById('inputArchivo').value = '';
+    const btn = document.getElementById('btnAnalizarArchivo');
+    btn.disabled = true; btn.style.opacity = '0.5'; btn.style.cursor = 'not-allowed';
+  }
+</script>
+</body>
+</html>
