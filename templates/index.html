@@ -9,44 +9,33 @@
 </head>
 <body>
 <input type="file" id="inputArchivo">
-
 <div class="ventana">
 
-    <!-- HEADER + NAVBAR -->
-    <div class="app-header">
-        <div class="logo-wrap">
-            <img src="/Estilos/logo.png" alt="Logo CiberAlerta" class="logo-img">
-        </div>
-        <div class="app-titulo">🛡️ CiberAlerta Cundinamarca</div>
-        <div class="app-subtitulo">Protegiendo a nuestra comunidad de estafas digitales</div>
-        <div class="navbar">
-            <button class="nav-btn activo" onclick="cambiarPantalla('mensajes', this)">
-        💬 Analizar Mensaje
-      </button>
-      <button class="nav-btn" onclick="cambiarPantalla('archivos', this)">
-        📁 Analizar Archivo
-      </button>
-      <button class="nav-btn" onclick="cambiarPantalla('antivirus', this)">
-        🔬 Antivirus Activos
-      </button>
+  <!-- HEADER + NAVBAR -->
+  <div class="app-header">
+    <div class="logo-wrap">
+      <img src="/Estilos/logo.png" alt="Logo CiberAlerta" class="logo-img">
+    </div>
+    <div class="app-titulo">🛡️ CiberAlerta Cundinamarca</div>
+    <div class="app-subtitulo">Protegiendo a nuestra comunidad de estafas digitales</div>
+    <div class="navbar">
+      <button class="nav-btn activo" onclick="cambiarPantalla('mensajes', this)">💬 Analizar Mensaje</button>
+      <button class="nav-btn" onclick="cambiarPantalla('archivos', this)">📁 Analizar Archivo</button>
+      <button class="nav-btn" onclick="cambiarPantalla('antivirus', this)">🔬 Antivirus Activos</button>
+      <button class="nav-btn" onclick="cambiarPantalla('manual', this)">📖 Manual de Uso</button>
     </div>
   </div>
 
-  <!-- ══════════════════════════════════════ -->
-  <!-- PANTALLA 1: MENSAJES                  -->
-  <!-- ══════════════════════════════════════ -->
-   <div class="pantalla activa" id="pantalla-mensajes">
-    <div class="banda-info">
-      💬 ¿Recibiste un mensaje sospechoso? Pégalo aquí y te decimos si es peligroso.
-    </div>
+  <!-- PANTALLA 1: MENSAJES -->
+  <div class="pantalla activa" id="pantalla-mensajes">
+    <div class="banda-info">💬 ¿Recibiste un mensaje sospechoso? Pégalo aquí y te decimos si es peligroso.</div>
     <div class="area-principal">
       <span class="label-campo">Escribe o pega el mensaje aquí:</span>
       <textarea id="campo" placeholder="Ejemplo: FELICITACIONES ganaste $5.000.000 pesos. Confirma tu cédula URGENTE hoy: bit.ly/premio123"></textarea>
       <div class="fila-botones">
-      <button class="btn-primario" onclick="analizarMensaje()">🔍 Analizar Mensaje</button>
-      <button class="btn-secundario" onclick="limpiarMensaje()">🗑️ Limpiar</button>
+        <button class="btn-primario" onclick="analizarMensaje()">🔍 Analizar Mensaje</button>
+        <button class="btn-secundario" onclick="limpiarMensaje()">🗑️ Limpiar</button>
       </div>
-
       <div class="ejemplos-titulo">Probar con ejemplos:</div>
       <div class="ejemplos-fila">
         <div class="chip" onclick="cargar('FELICITACIONES! Has sido SELECCIONADO ganador de $5.000.000 pesos del Gobierno. Confirma tu cedula URGENTE antes de que caduque hoy: bit.ly/gobierno-premio2024')">🔴 Estafa de premio</div>
@@ -58,25 +47,15 @@
     <div class="resultado-area" id="resultado-mensaje"></div>
   </div>
 
-  <!-- ══════════════════════════════════════ -->
-  <!-- PANTALLA 2: ARCHIVOS                  -->
-  <!-- ══════════════════════════════════════ -->
+  <!-- PANTALLA 2: ARCHIVOS -->
   <div class="pantalla" id="pantalla-archivos">
-    <div class="banda-info">
-      📁 Sube un archivo sospechoso y lo analizamos con VirusTotal en tiempo real.
-    </div>
+    <div class="banda-info">📁 Sube un archivo sospechoso y lo analizamos con VirusTotal en tiempo real.</div>
     <div class="area-principal">
-
-      <!-- Zona arrastrar y soltar -->
-      <div class="zona-drop" id="zonaDrop"
-           onclick="document.getElementById('inputArchivo').click()"
-           ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dragDrop(event)">
+      <div class="zona-drop" id="zonaDrop" onclick="document.getElementById('inputArchivo').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dragDrop(event)">
         <div class="zona-drop-icono">📂</div>
         <div class="zona-drop-titulo">Arrastra el archivo aquí o haz clic para seleccionarlo</div>
         <div class="zona-drop-sub">Formatos: .exe .pdf .docx .zip .apk · Máx. 32MB</div>
       </div>
-
-      <!-- Info archivo seleccionado -->
       <div class="archivo-seleccionado" id="archivoSeleccionado">
         <div class="archivo-icono" id="archivoIcono">📄</div>
         <div class="archivo-info">
@@ -84,123 +63,142 @@
           <div class="archivo-tamano" id="archivoTamano">—</div>
         </div>
       </div>
-
-      <!-- Barra de progreso -->
       <div class="progreso-wrap" id="progresoWrap">
         <div class="progreso-label" id="progresoLabel">Enviando a VirusTotal...</div>
-        <div class="progreso-bar-bg">
-          <div class="progreso-bar" id="progresoBar"></div>
-        </div>
+        <div class="progreso-bar-bg"><div class="progreso-bar" id="progresoBar"></div></div>
       </div>
-
       <div class="fila-botones">
-        <button class="btn-primario" id="btnAnalizarArchivo" onclick="analizarArchivo()" disabled
-                style="opacity:0.5; cursor:not-allowed;">
-          🔬 Analizar con VirusTotal
-        </button>
+        <button class="btn-primario" id="btnAnalizarArchivo" onclick="analizarArchivo()" disabled style="opacity:0.5; cursor:not-allowed;">🔬 Analizar con VirusTotal</button>
         <button class="btn-secundario" onclick="limpiarArchivo()">🗑️ Limpiar</button>
       </div>
     </div>
-
     <div class="resultado-archivo" id="resultado-archivo" style="margin: 0 26px 24px;"></div>
   </div>
 
-  <!-- ══════════════════════════════════════ -->
-  <!-- PANTALLA 3: ANTIVIRUS                 -->
-  <!-- ══════════════════════════════════════ -->
-   <div class="pantalla" id="pantalla-antivirus">
-    <div class="av-header">
-      🔬 VirusTotal utiliza más de 70 motores antivirus para analizar enlaces y archivos en tiempo real.
-    </div>
-
-    <!-- Estadísticas generales -->
+  <!-- PANTALLA 3: ANTIVIRUS -->
+  <div class="pantalla" id="pantalla-antivirus">
+    <div class="av-header">🔬 VirusTotal utiliza más de 70 motores antivirus para analizar enlaces y archivos en tiempo real.</div>
     <div class="av-stats">
-      <div class="av-stat-card">
-        <div class="av-stat-num" style="color:#1565C0;">70+</div>
-        <div class="av-stat-label">Motores activos</div>
-      </div>
-      <div class="av-stat-card">
-        <div class="av-stat-num" style="color:#2E7D32;">99%</div>
-        <div class="av-stat-label">Tasa de detección</div>
-      </div>
-      <div class="av-stat-card">
-        <div class="av-stat-num" style="color:#E65100;">⚡</div>
-        <div class="av-stat-label">Análisis en tiempo real</div>
-      </div>
+      <div class="av-stat-card"><div class="av-stat-num" style="color:#1565C0;">70+</div><div class="av-stat-label">Motores activos</div></div>
+      <div class="av-stat-card"><div class="av-stat-num" style="color:#2E7D32;">99%</div><div class="av-stat-label">Tasa de detección</div></div>
+      <div class="av-stat-card"><div class="av-stat-num" style="color:#E65100;">⚡</div><div class="av-stat-label">Análisis en tiempo real</div></div>
     </div>
-
-    <!-- Lista de antivirus -->
     <div class="av-grid">
-      <div class="av-card">
-        <div class="av-logo">🔵</div>
-        <div><div class="av-nombre">Kaspersky</div><div class="av-tipo">Motor de detección avanzada</div></div>
-        <span class="av-badge activo">✅ Activo</span>
-      </div>
-      <div class="av-card">
-        <div class="av-logo">🟠</div>
-        <div><div class="av-nombre">BitDefender</div><div class="av-tipo">Análisis heurístico</div></div>
-        <span class="av-badge activo">✅ Activo</span>
-      </div>
-      <div class="av-card">
-        <div class="av-logo">🔴</div>
-        <div><div class="av-nombre">McAfee</div><div class="av-tipo">Detección de malware</div></div>
-        <span class="av-badge activo">✅ Activo</span>
-      </div>
-      <div class="av-card">
-        <div class="av-logo">🟢</div>
-        <div><div class="av-nombre">ESET</div><div class="av-tipo">NOD32 Antivirus Engine</div></div>
-        <span class="av-badge activo">✅ Activo</span>
-      </div>
-      <div class="av-card">
-        <div class="av-logo">🔷</div>
-        <div><div class="av-nombre">Avast</div><div class="av-tipo">Motor de análisis web</div></div>
-        <span class="av-badge activo">✅ Activo</span>
-      </div>
-      <div class="av-card">
-        <div class="av-logo">🟡</div>
-        <div><div class="av-nombre">Symantec</div><div class="av-tipo">Norton Security Engine</div></div>
-        <span class="av-badge activo">✅ Activo</span>
-      </div>
-      <div class="av-card">
-        <div class="av-logo">⚫</div>
-        <div><div class="av-nombre">Malwarebytes</div><div class="av-tipo">Anti-malware avanzado</div></div>
-        <span class="av-badge activo">✅ Activo</span>
-      </div>
-      <div class="av-card">
-        <div class="av-logo">🔵</div>
-        <div><div class="av-nombre">Microsoft Defender</div><div class="av-tipo">Windows Security Engine</div></div>
-        <span class="av-badge activo">✅ Activo</span>
-      </div>
-      <div class="av-card">
-        <div class="av-logo">🟤</div>
-        <div><div class="av-nombre">Trend Micro</div><div class="av-tipo">Cloud-based detection</div></div>
-        <span class="av-badge activo">✅ Activo</span>
-      </div>
-      <div class="av-card">
-        <div class="av-logo">🟣</div>
-        <div><div class="av-nombre">CrowdStrike Falcon</div><div class="av-tipo">AI Threat Intelligence</div></div>
-        <span class="av-badge motor">🔬 Motor IA</span>
-      </div>
-      <div class="av-card">
-        <div class="av-logo">🔵</div>
-        <div><div class="av-nombre">Sophos</div><div class="av-tipo">Intercept X Engine</div></div>
-        <span class="av-badge activo">✅ Activo</span>
-      </div>
-      <div class="av-card">
-        <div class="av-logo">🟠</div>
-        <div><div class="av-nombre">F-Secure</div><div class="av-tipo">DeepGuard Technology</div></div>
-        <span class="av-badge activo">✅ Activo</span>
-      </div>
+      <div class="av-card"><div class="av-logo">🔵</div><div><div class="av-nombre">Kaspersky</div><div class="av-tipo">Motor de detección avanzada</div></div><span class="av-badge activo">✅ Activo</span></div>
+      <div class="av-card"><div class="av-logo">🟠</div><div><div class="av-nombre">BitDefender</div><div class="av-tipo">Análisis heurístico</div></div><span class="av-badge activo">✅ Activo</span></div>
+      <div class="av-card"><div class="av-logo">🔴</div><div><div class="av-nombre">McAfee</div><div class="av-tipo">Detección de malware</div></div><span class="av-badge activo">✅ Activo</span></div>
+      <div class="av-card"><div class="av-logo">🟢</div><div><div class="av-nombre">ESET</div><div class="av-tipo">NOD32 Antivirus Engine</div></div><span class="av-badge activo">✅ Activo</span></div>
+      <div class="av-card"><div class="av-logo">🔷</div><div><div class="av-nombre">Avast</div><div class="av-tipo">Motor de análisis web</div></div><span class="av-badge activo">✅ Activo</span></div>
+      <div class="av-card"><div class="av-logo">🟡</div><div><div class="av-nombre">Symantec</div><div class="av-tipo">Norton Security Engine</div></div><span class="av-badge activo">✅ Activo</span></div>
+      <div class="av-card"><div class="av-logo">⚫</div><div><div class="av-nombre">Malwarebytes</div><div class="av-tipo">Anti-malware avanzado</div></div><span class="av-badge activo">✅ Activo</span></div>
+      <div class="av-card"><div class="av-logo">🔵</div><div><div class="av-nombre">Microsoft Defender</div><div class="av-tipo">Windows Security Engine</div></div><span class="av-badge activo">✅ Activo</span></div>
+      <div class="av-card"><div class="av-logo">🟤</div><div><div class="av-nombre">Trend Micro</div><div class="av-tipo">Cloud-based detection</div></div><span class="av-badge activo">✅ Activo</span></div>
+      <div class="av-card"><div class="av-logo">🟣</div><div><div class="av-nombre">CrowdStrike Falcon</div><div class="av-tipo">AI Threat Intelligence</div></div><span class="av-badge motor">🔬 Motor IA</span></div>
+      <div class="av-card"><div class="av-logo">🔵</div><div><div class="av-nombre">Sophos</div><div class="av-tipo">Intercept X Engine</div></div><span class="av-badge activo">✅ Activo</span></div>
+      <div class="av-card"><div class="av-logo">🟠</div><div><div class="av-nombre">F-Secure</div><div class="av-tipo">DeepGuard Technology</div></div><span class="av-badge activo">✅ Activo</span></div>
     </div>
+    <div class="av-nota">💡 Estos son solo 12 de los más de 70 motores que usa VirusTotal. Cuando analizas un enlace o archivo, <strong>todos ellos trabajan al mismo tiempo</strong> para darte el resultado más preciso posible.</div>
+  </div>
 
-    <div class="av-nota">
-      💡 Estos son solo 12 de los más de 70 motores que usa VirusTotal. Cuando analizas un enlace o archivo, <strong>todos ellos trabajan al mismo tiempo</strong> para darte el resultado más preciso posible.
+  <!-- PANTALLA 4: MANUAL DE USO -->
+  <div class="pantalla" id="pantalla-manual">
+    <div class="banda-info">📖 Guía fácil para usar CiberAlerta Cundinamarca paso a paso.</div>
+    <div class="manual-wrap">
+
+      <div class="manual-seccion">
+        <div class="manual-sec-titulo">🤔 ¿Para qué sirve esta herramienta?</div>
+        <div class="manual-caja azul">
+          <p>Si le llega un mensaje raro por <strong>WhatsApp, correo o SMS</strong>, pégalo aquí y te decimos en segundos si es una <strong>ESTAFA</strong> o es <strong>SEGURO</strong>.</p>
+          <p>También puedes subir archivos sospechosos para verificarlos antes de abrirlos.</p>
+        </div>
+      </div>
+
+      <div class="manual-seccion">
+        <div class="manual-sec-titulo">🌐 ¿Cómo entrar?</div>
+        <div class="manual-pasos">
+          <div class="manual-paso"><span class="paso-num">1</span><span class="paso-txt">Abra el navegador (Chrome, Firefox o Edge) en su celular o computador</span></div>
+          <div class="manual-paso"><span class="paso-num">2</span><span class="paso-txt">Escriba en la barra de arriba: <strong>ciberalerta-cundinamarca.onrender.com</strong></span></div>
+          <div class="manual-paso"><span class="paso-num">3</span><span class="paso-txt">Presione Enter. La primera vez puede tardar 1 minuto en cargar.</span></div>
+        </div>
+      </div>
+
+      <div class="manual-seccion">
+        <div class="manual-sec-titulo">💬 ¿Cómo analizar un mensaje?</div>
+        <div class="manual-pasos">
+          <div class="manual-paso"><span class="paso-num">1</span><span class="paso-txt">Toque el botón <strong>💬 Analizar Mensaje</strong> en el menú de arriba</span></div>
+          <div class="manual-paso"><span class="paso-num">2</span><span class="paso-txt">Abra el mensaje sospechoso, manténgalo presionado y toque <strong>Copiar</strong></span></div>
+          <div class="manual-paso"><span class="paso-num">3</span><span class="paso-txt">Vuelva aquí y toque el recuadro grande de texto</span></div>
+          <div class="manual-paso"><span class="paso-num">4</span><span class="paso-txt">Toque <strong>Pegar</strong> para poner el mensaje ahí</span></div>
+          <div class="manual-paso"><span class="paso-num">5</span><span class="paso-txt">Toque el botón azul <strong>🔍 Analizar Mensaje</strong> y espere el resultado</span></div>
+        </div>
+      </div>
+
+      <div class="manual-seccion">
+        <div class="manual-sec-titulo">🚦 ¿Qué significa el resultado?</div>
+        <div class="manual-semaforo">
+          <div class="manual-resultado rojo-res">
+            <div class="resultado-emoji-m">🚨</div>
+            <div><div class="resultado-titulo-m">ROJO = PELIGRO</div><div class="resultado-desc-m">ES una estafa. NO responda. NO haga clic. Bloquee y borre el mensaje.</div></div>
+          </div>
+          <div class="manual-resultado amarillo-res">
+            <div class="resultado-emoji-m">⚠️</div>
+            <div><div class="resultado-titulo-m">AMARILLO = CUIDADO</div><div class="resultado-desc-m">Es sospechoso. Llame a un familiar o al banco ANTES de hacer algo.</div></div>
+          </div>
+          <div class="manual-resultado verde-res">
+            <div class="resultado-emoji-m">✅</div>
+            <div><div class="resultado-titulo-m">VERDE = SEGURO</div><div class="resultado-desc-m">No se detectaron amenazas. Igual nunca comparta su clave por mensaje.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="manual-seccion">
+        <div class="manual-sec-titulo">📁 ¿Cómo analizar un archivo?</div>
+        <div class="manual-pasos">
+          <div class="manual-paso"><span class="paso-num">1</span><span class="paso-txt">Toque el botón <strong>📁 Analizar Archivo</strong> en el menú de arriba</span></div>
+          <div class="manual-paso"><span class="paso-num">2</span><span class="paso-txt">Toque el recuadro azul punteado para buscar el archivo</span></div>
+          <div class="manual-paso"><span class="paso-num">3</span><span class="paso-txt">Seleccione el archivo que quiere verificar</span></div>
+          <div class="manual-paso"><span class="paso-num">4</span><span class="paso-txt">Toque <strong>🔬 Analizar con VirusTotal</strong> y espere hasta 1 minuto</span></div>
+          <div class="manual-paso"><span class="paso-num">5</span><span class="paso-txt"><strong>ROJO</strong> = No abra el archivo. &nbsp;<strong>VERDE</strong> = Está limpio y es seguro.</span></div>
+        </div>
+      </div>
+
+      <div class="manual-seccion">
+        <div class="manual-sec-titulo">🚩 Señales de una estafa</div>
+        <div class="manual-senales">
+          <div class="manual-senal"><span class="senal-emoji">🎁</span><div><strong>Le dicen que GANÓ un premio:</strong> Si no participó en nada, no ganó nada. Es mentira.</div></div>
+          <div class="manual-senal"><span class="senal-emoji">⚡</span><div><strong>Le dicen que es URGENTE:</strong> Los estafadores presionan para que no piense. Desconfíe.</div></div>
+          <div class="manual-senal"><span class="senal-emoji">🔒</span><div><strong>Le piden clave, PIN o cédula:</strong> Ningún banco ni entidad le pedirá esto por mensaje. NUNCA.</div></div>
+          <div class="manual-senal"><span class="senal-emoji">📱</span><div><strong>Le piden instalar una app:</strong> No instale nada ni haga clic en enlaces de mensajes.</div></div>
+          <div class="manual-senal"><span class="senal-emoji">💸</span><div><strong>Le piden pagar para recibir algo:</strong> Los premios reales no piden que pague primero.</div></div>
+        </div>
+      </div>
+
+      <div class="manual-seccion">
+        <div class="manual-sec-titulo">🆘 ¿Qué hacer si cayó en una estafa?</div>
+        <div class="manual-pasos">
+          <div class="manual-paso"><span class="paso-num rojo-num">1</span><span class="paso-txt">Llame a su banco AL INSTANTE al número del reverso de su tarjeta</span></div>
+          <div class="manual-paso"><span class="paso-num rojo-num">2</span><span class="paso-txt">Cambie su contraseña de correo y redes sociales</span></div>
+          <div class="manual-paso"><span class="paso-num rojo-num">3</span><span class="paso-txt">Cuente lo que pasó a un familiar de confianza</span></div>
+          <div class="manual-paso"><span class="paso-num rojo-num">4</span><span class="paso-txt">Llame a la Policía al <strong>123</strong> para denunciar</span></div>
+          <div class="manual-paso"><span class="paso-num rojo-num">5</span><span class="paso-txt">NO pague más dinero aunque le digan que es para recuperar lo perdido</span></div>
+        </div>
+      </div>
+
+      <div class="manual-seccion">
+        <div class="manual-sec-titulo">📞 Números importantes</div>
+        <div class="manual-numeros">
+          <div class="manual-numero-card"><div class="num-entidad">📞 Policía Nacional</div><div class="num-valor">123</div></div>
+          <div class="manual-numero-card"><div class="num-entidad">🏦 Su banco</div><div class="num-valor" style="font-size:13px;">Reverso de su tarjeta</div></div>
+          <div class="manual-numero-card"><div class="num-entidad">🌐 CAI Virtual</div><div class="num-valor" style="font-size:12px;">policia.gov.co</div></div>
+          <div class="manual-numero-card"><div class="num-entidad">📋 Atención ciudadano</div><div class="num-valor">195</div></div>
+        </div>
+      </div>
+
     </div>
   </div>
 
   <div class="app-pie">Grupo 5 · Proyecto de Ciberseguridad · Bootcamp · Cundinamarca</div>
 </div>
-
 <script src="/Funcion/Funcion.js"></script>
 </body>
 </html>

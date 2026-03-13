@@ -64,7 +64,7 @@
     display: flex;
     gap: 4px;
     justify-content: center;
-    margin-top: 18 px;
+    margin-top: 18px;
     padding: 0 16px;
   }
 
@@ -618,3 +618,35 @@
     height: 140px;
   }
 }
+
+/* ── PANTALLA MANUAL ── */
+.manual-wrap { padding: 16px 20px; display: flex; flex-direction: column; gap: 14px; }
+.manual-seccion { background: white; border-radius: 10px; overflow: hidden; border: 1.5px solid #E0E0E0; }
+.manual-sec-titulo { background: #1A3A5C; color: white; font-size: 14px; font-weight: 800; padding: 10px 16px; }
+.manual-caja { padding: 12px 16px; font-size: 13px; color: #37474F; line-height: 1.6; }
+.manual-caja.azul { background: #E3F2FD; border-left: 4px solid #1565C0; }
+.manual-pasos { display: flex; flex-direction: column; }
+.manual-paso { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-bottom: 1px solid #F0F0F0; font-size: 13px; color: #37474F; }
+.manual-paso:last-child { border-bottom: none; }
+.paso-num { background: #1565C0; color: white; font-weight: 900; font-size: 14px; min-width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.rojo-num { background: #C62828; }
+.paso-txt { line-height: 1.5; }
+.manual-semaforo { display: flex; flex-direction: column; }
+.manual-resultado { display: flex; align-items: center; gap: 14px; padding: 12px 16px; border-bottom: 1px solid rgba(0,0,0,0.06); }
+.manual-resultado:last-child { border-bottom: none; }
+.rojo-res { background: #FFEBEE; }
+.amarillo-res { background: #FFF8E1; }
+.verde-res { background: #E8F5E9; }
+.resultado-emoji-m { font-size: 28px; flex-shrink: 0; }
+.resultado-titulo-m { font-size: 14px; font-weight: 900; color: #1A3A5C; }
+.resultado-desc-m { font-size: 12px; color: #546E7A; margin-top: 2px; line-height: 1.5; }
+.manual-senales { display: flex; flex-direction: column; }
+.manual-senal { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-bottom: 1px solid #FFF8E1; font-size: 13px; color: #37474F; background: #FFFDE7; line-height: 1.5; }
+.manual-senal:last-child { border-bottom: none; }
+.senal-emoji { font-size: 22px; flex-shrink: 0; }
+.manual-numeros { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+.manual-numero-card { padding: 14px 16px; text-align: center; border-right: 1px solid #E0E0E0; border-bottom: 1px solid #E0E0E0; }
+.manual-numero-card:nth-child(even) { border-right: none; }
+.manual-numero-card:nth-last-child(-n+2) { border-bottom: none; }
+.num-entidad { font-size: 12px; font-weight: 700; color: #546E7A; margin-bottom: 4px; }
+.num-valor { font-size: 20px; font-weight: 900; color: #C62828; }
