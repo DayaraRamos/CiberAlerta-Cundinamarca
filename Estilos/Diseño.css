@@ -573,3 +573,48 @@
     font-weight: 700; 
     font-size: 14px;
   }
+
+  /* ── RESPONSIVE MÓVIL ── */
+@media (max-width: 600px) {
+  .av-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .av-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .av-card {
+    padding: 12px;
+  }
+
+  .av-nombre {
+    font-size: 12px;
+  }
+
+  .av-tipo {
+    font-size: 10px;
+  }
+
+  .av-badge {
+    font-size: 9px;
+    padding: 2px 6px;
+  }
+
+  .navbar {
+    flex-direction: column;
+    gap: 4px;
+    padding: 0 8px;
+  }
+
+  .nav-btn {
+    width: 100%;
+    border-radius: 8px;
+    justify-content: center;
+  }
+
+  .logo-img {
+    width: 140px;
+    height: 140px;
+  }
+}
