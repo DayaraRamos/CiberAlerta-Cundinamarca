@@ -645,8 +645,10 @@
 .manual-senal:last-child { border-bottom: none; }
 .senal-emoji { font-size: 22px; flex-shrink: 0; }
 .manual-numeros { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
-.manual-numero-card { padding: 14px 16px; text-align: center; border-right: 1px solid #E0E0E0; border-bottom: 1px solid #E0E0E0; }
-.manual-numero-card:nth-child(even) { border-right: none; }
-.manual-numero-card:nth-last-child(-n+2) { border-bottom: none; }
+.manual-numero-card { padding: 14px 16px; text-align: center; }
+.uno { background-color: #E3F2FD; border-right: 2px solid #1A3A5C; border-bottom: 2px solid #1A3A5C; }
+.dos { background-color: #E8F5E9; border-bottom: 2px solid #1A3A5C; }
+.tres { background-color: #EDE7F6; border-right: 2px solid #1A3A5C; }
+.cuatro { background-color: #FFF3E0; }
 .num-entidad { font-size: 12px; font-weight: 700; color: #546E7A; margin-bottom: 4px; }
 .num-valor { font-size: 20px; font-weight: 900; color: #C62828; }
