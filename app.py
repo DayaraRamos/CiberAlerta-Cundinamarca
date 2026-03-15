@@ -29,7 +29,7 @@ VIRUSTOTAL_FILE_SCAN = "https://www.virustotal.com/api/v3/files"
 
 # ---------- BASE DE CONOCIMIENTO ----------
 PALABRAS_PELIGROSAS = [
-    "ganaste", "gano", "premio", "felicitaciones has sido seleccionado",
+    "Secuestrado","secuestrado","dar dinero","robo","ganaste", "gano", "premio", "felicitaciones has sido seleccionado",
     "urgente", "inmediatamente", "cuenta bloqueada", "cuenta suspendida",
     "verificar cuenta", "haz clic", "clic aqui",
     "confirma tus datos", "ingresa tus datos", "actualiza tus datos",
