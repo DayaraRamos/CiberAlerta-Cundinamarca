@@ -10,7 +10,7 @@
 </head>
 <body>
 <input type="file" id="inputArchivo">
-<input type="file" id="inputImagenOCR" accept="image/*">
+<input type="file" id="inputImagenOCR" accept="image/*" style="display:none"> 
 <div class="ventana">
 
   <!-- HEADER + NAVBAR -->
@@ -116,7 +116,7 @@
       <!-- TABS -->
       <div class="modo-tabs">
         <button class="modo-tab activo" id="tabArchivo" onclick="cambiarModo('archivo')">🛡️ Analizar Archivo (VirusTotal)</button>
-        <button class="modo-tab" id="tabImagen" onclick="cambiarModo('imagen')">🔍 Leer Imagen con OCR</button>
+        <button class="modo-tab" id="tabImagen" onclick="cambiarModo('imagen')">🔍 Leer Capturas de pantalla</button>
       </div>
 
       <!-- ZONA ARCHIVO VIRUSTOTAL -->
