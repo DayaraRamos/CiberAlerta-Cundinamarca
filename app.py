@@ -3,7 +3,8 @@ import re
 import requests
 import os
 from PIL import Image
-import pytesseract
+import easyocr
+import numpy as np
 import io
 
 # ============================================================
@@ -26,6 +27,15 @@ def funcion(filename):
 VIRUSTOTAL_API_KEY = os.environ.get("VIRUSTOTAL_API_KEY", "")
 VIRUSTOTAL_URL_SCAN  = "https://www.virustotal.com/api/v3/urls"
 VIRUSTOTAL_FILE_SCAN = "https://www.virustotal.com/api/v3/files"
+
+# ---------- OCR READER (se carga una sola vez) ----------
+ocr_reader = None
+
+def get_ocr_reader():
+    global ocr_reader
+    if ocr_reader is None:
+        ocr_reader = easyocr.Reader(['es', 'en'], gpu=False)
+    return ocr_reader
 
 # ---------- BASE DE CONOCIMIENTO ----------
 PALABRAS_PELIGROSAS = [
@@ -218,8 +228,10 @@ def analizar_imagen():
         return jsonify({"error": "Formato no soportado. Usa JPG o PNG."}), 400
     try:
         imagen = Image.open(io.BytesIO(archivo.read()))
-        texto = pytesseract.image_to_string(imagen, lang="spa+eng")
-        texto = texto.strip()
+        imagen_np = np.array(imagen)
+        reader = get_ocr_reader()
+        resultados = reader.readtext(imagen_np, detail=0)
+        texto = ' '.join(resultados).strip()
         if len(texto) < 5:
             return jsonify({
                 "error": "No se pudo leer texto en la imagen. Intenta con una imagen mas clara.",
