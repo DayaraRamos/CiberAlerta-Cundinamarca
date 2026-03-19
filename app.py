@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 import re
 import requests
+import os
 
 # ============================================================
 #   CIBERALERTA CUNDINAMARCA - Servidor Flask
@@ -23,7 +24,7 @@ def funcion(filename):
 
 # ---------- CONFIGURACION VIRUSTOTAL ----------
 # Aqui si o si toca reemplazar esto con la API Key de virustotal.com
-VIRUSTOTAL_API_KEY = "68df8dff822c44acae54425699f03f72754ff07a03ff3d668333108395a06795"
+VIRUSTOTAL_API_KEY = os.environ.get("VIRUSTOTAL_API_KEY", "")
 VIRUSTOTAL_URL_SCAN  = "https://www.virustotal.com/api/v3/urls"
 VIRUSTOTAL_FILE_SCAN = "https://www.virustotal.com/api/v3/files"
 
