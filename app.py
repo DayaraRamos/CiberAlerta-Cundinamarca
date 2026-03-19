@@ -3,9 +3,8 @@ import re
 import requests
 import os
 from PIL import Image
-import easyocr
-import numpy as np
 import io
+import base64
 
 # ============================================================
 #   CIBERALERTA CUNDINAMARCA - Servidor Flask
@@ -27,15 +26,6 @@ def funcion(filename):
 VIRUSTOTAL_API_KEY = os.environ.get("VIRUSTOTAL_API_KEY", "")
 VIRUSTOTAL_URL_SCAN  = "https://www.virustotal.com/api/v3/urls"
 VIRUSTOTAL_FILE_SCAN = "https://www.virustotal.com/api/v3/files"
-
-# ---------- OCR READER (se carga una sola vez) ----------
-ocr_reader = None
-
-def get_ocr_reader():
-    global ocr_reader
-    if ocr_reader is None:
-        ocr_reader = easyocr.Reader(['es', 'en'], gpu=False)
-    return ocr_reader
 
 # ---------- BASE DE CONOCIMIENTO ----------
 PALABRAS_PELIGROSAS = [
@@ -227,11 +217,20 @@ def analizar_imagen():
     if ext not in extensiones_validas:
         return jsonify({"error": "Formato no soportado. Usa JPG o PNG."}), 400
     try:
-        imagen = Image.open(io.BytesIO(archivo.read()))
-        imagen_np = np.array(imagen)
-        reader = get_ocr_reader()
-        resultados = reader.readtext(imagen_np, detail=0)
-        texto = ' '.join(resultados).strip()
+        imagen_bytes = archivo.read()
+        b64 = base64.b64encode(imagen_bytes).decode("utf-8")
+        response = requests.post(
+            "https://api.ocr.space/parse/image",
+            data={
+                "apikey": "helloworld",
+                "base64Image": f"data:image/jpeg;base64,{b64}",
+                "language": "spa",
+                "isOverlayRequired": False,
+            },
+            timeout=30
+        )
+        resultado_ocr = response.json()
+        texto = resultado_ocr.get("ParsedResults", [{}])[0].get("ParsedText", "").strip()
         if len(texto) < 5:
             return jsonify({
                 "error": "No se pudo leer texto en la imagen. Intenta con una imagen mas clara.",
