@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, jsonify, send_from_directory
 import re
 import requests
 import os
-from PIL import Image
 import io
 import base64
 
