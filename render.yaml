@@ -7,6 +7,6 @@ services:
     envVars:
       - key: VIRUSTOTAL_API_KEY
         sync: false
-    nativePackages:
+    packages:
       - tesseract-ocr
       - tesseract-ocr-spa
