@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: CiberAlerta-Cundinamarca
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: VIRUSTOTAL_API_KEY
+        sync: false
+    nativePackages:
+      - tesseract-ocr
+      - tesseract-ocr-spa
