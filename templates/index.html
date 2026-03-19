@@ -10,72 +10,74 @@
 </head>
 <body>
 <input type="file" id="inputArchivo">
+<input type="file" id="inputImagenOCR" accept="image/*">
 <div class="ventana">
 
   <!-- HEADER + NAVBAR -->
   <div class="app-header">
     <video autoplay muted loop playsinline>
-    <source src="/Estilos/Fondo.mp4" type="video/mp4">
-  </video>
+      <source src="/Estilos/Fondo.mp4" type="video/mp4">
+    </video>
     <div class="logo-wrap">
       <img src="/Estilos/logo.png" alt="Logo CiberAlerta" class="logo-img">
     </div>
     <div class="app-titulo">🛡️ CiberAlerta Cundinamarca</div>
     <div class="app-subtitulo">Protegiendo a nuestra comunidad de estafas digitales</div><br>
+
     <div class="manual-seccion">
-  <div class="manual-sec-titulo">📞 Números importantes</div>
-  <div class="manual-numeros">
+      <div class="manual-sec-titulo">📞 Números importantes</div>
+      <div class="manual-numeros">
 
-  <a href="tel:123" class="num-card uno">
-    <div class="num-card-inner">
-      <div class="num-front">
-        <div class="num-icon">🚔</div>
-        <div class="num-entidad">Policía Nacional</div>
-        <div class="num-valor">123</div>
-        <div class="num-toque">Toca para llamar</div>
+        <a href="tel:123" class="num-card uno">
+          <div class="num-card-inner">
+            <div class="num-front">
+              <div class="num-icon">🚔</div>
+              <div class="num-entidad">Policía Nacional</div>
+              <div class="num-valor">123</div>
+              <div class="num-toque">Toca para llamar</div>
+            </div>
+            <div class="num-back">📞 Llame al 123<br>ante cualquier<br>emergencia o estafa</div>
+          </div>
+        </a>
+
+        <div class="num-card dos">
+          <div class="num-card-inner">
+            <div class="num-front">
+              <div class="num-icon">🏦</div>
+              <div class="num-entidad">Su banco</div>
+              <div class="num-valor" style="font-size:13px;">Reverso tarjeta</div>
+              <div class="num-toque">Número en su tarjeta</div>
+            </div>
+            <div class="num-back">🏦 Llame al número<br>del reverso de<br>su tarjeta bancaria</div>
+          </div>
+        </div>
+
+        <a href="https://caivirtual.policia.gov.co/" target="_blank" class="num-card tres">
+          <div class="num-card-inner">
+            <div class="num-front">
+              <div class="num-icon">💻</div>
+              <div class="num-entidad">CAI Virtual</div>
+              <div class="num-valor" style="font-size:13px;">Chatbot Policía</div>
+              <div class="num-toque">Toca para abrir</div>
+            </div>
+            <div class="num-back">💻 Denuncie delitos<br>cibernéticos en línea<br>de forma gratuita</div>
+          </div>
+        </a>
+
+        <a href="tel:195" class="num-card cuatro">
+          <div class="num-card-inner">
+            <div class="num-front">
+              <div class="num-icon">📋</div>
+              <div class="num-entidad">Atención ciudadano</div>
+              <div class="num-valor">195</div>
+              <div class="num-toque">Toca para llamar</div>
+            </div>
+            <div class="num-back">📋 Línea gratuita<br>de atención<br>al ciudadano 24/7</div>
+          </div>
+        </a>
+
       </div>
-      <div class="num-back">📞 Llame al 123<br>ante cualquier<br>emergencia o estafa</div>
     </div>
-  </a>
-
-  <div class="num-card dos">
-    <div class="num-card-inner">
-      <div class="num-front">
-        <div class="num-icon">🏦</div>
-        <div class="num-entidad">Su banco</div>
-        <div class="num-valor" style="font-size:13px;">Reverso tarjeta</div>
-        <div class="num-toque">Número en su tarjeta</div>
-      </div>
-      <div class="num-back">🏦 Llame al número<br>del reverso de<br>su tarjeta bancaria</div>
-    </div>
-  </div>
-
-  <a href="https://caivirtual.policia.gov.co/" target="_blank" class="num-card tres">
-    <div class="num-card-inner">
-      <div class="num-front">
-        <div class="num-icon">💻</div>
-        <div class="num-entidad">CAI Virtual</div>
-        <div class="num-valor" style="font-size:13px;">Chatbot Policía</div>
-        <div class="num-toque">Toca para abrir</div>
-      </div>
-      <div class="num-back">💻 Denuncie delitos<br>cibernéticos en línea<br>de forma gratuita</div>
-    </div>
-  </a>
-
-  <a href="tel:195" class="num-card cuatro">
-    <div class="num-card-inner">
-      <div class="num-front">
-        <div class="num-icon">📋</div>
-        <div class="num-entidad">Atención ciudadano</div>
-        <div class="num-valor">195</div>
-        <div class="num-toque">Toca para llamar</div>
-      </div>
-      <div class="num-back">📋 Línea gratuita<br>de atención<br>al ciudadano 24/7</div>
-    </div>
-  </a>
-
-</div>
-</div>
 
     <div class="navbar">
       <button class="nav-btn activo" onclick="cambiarPantalla('mensajes', this)">💬 Analizar Mensaje</button>
@@ -108,30 +110,66 @@
 
   <!-- PANTALLA 2: ARCHIVOS -->
   <div class="pantalla" id="pantalla-archivos">
-    <div class="banda-info">📁 Sube un archivo sospechoso y lo analizamos con VirusTotal en tiempo real.</div>
+    <div class="banda-info">📁 Analiza archivos con VirusTotal o imágenes de mensajes sospechosos con OCR.</div>
     <div class="area-principal">
-      <div class="zona-drop" id="zonaDrop" onclick="document.getElementById('inputArchivo').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dragDrop(event)">
-        <div class="zona-drop-icono">📂</div>
-        <div class="zona-drop-titulo">Arrastra el archivo aquí o haz clic para seleccionarlo</div>
-        <div class="zona-drop-sub">Formatos: .exe .pdf .docx .zip .apk · Máx. 32MB</div>
+
+      <!-- TABS -->
+      <div class="modo-tabs">
+        <button class="modo-tab activo" id="tabArchivo" onclick="cambiarModo('archivo')">🛡️ Analizar Archivo (VirusTotal)</button>
+        <button class="modo-tab" id="tabImagen" onclick="cambiarModo('imagen')">🔍 Leer Imagen con OCR</button>
       </div>
-      <div class="archivo-seleccionado" id="archivoSeleccionado">
-        <div class="archivo-icono" id="archivoIcono">📄</div>
-        <div class="archivo-info">
-          <div class="archivo-nombre" id="archivoNombre">—</div>
-          <div class="archivo-tamano" id="archivoTamano">—</div>
+
+      <!-- ZONA ARCHIVO VIRUSTOTAL -->
+      <div id="zonaArchivoCompleta">
+        <div class="zona-drop" id="zonaDrop" onclick="document.getElementById('inputArchivo').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dragDrop(event)">
+          <div class="zona-drop-icono">📂</div>
+          <div class="zona-drop-titulo">Arrastra el archivo aquí o haz clic para seleccionarlo</div>
+          <div class="zona-drop-sub">Formatos: .exe .pdf .docx .zip .apk · Máx. 32MB</div>
         </div>
+        <div class="archivo-seleccionado" id="archivoSeleccionado">
+          <div class="archivo-icono" id="archivoIcono">📄</div>
+          <div class="archivo-info">
+            <div class="archivo-nombre" id="archivoNombre">—</div>
+            <div class="archivo-tamano" id="archivoTamano">—</div>
+          </div>
+        </div>
+        <div class="progreso-wrap" id="progresoWrap">
+          <div class="progreso-label" id="progresoLabel">Enviando a VirusTotal...</div>
+          <div class="progreso-bar-bg"><div class="progreso-bar" id="progresoBar"></div></div>
+        </div>
+        <div class="fila-botones">
+          <button class="btn-primario" id="btnAnalizarArchivo" onclick="analizarArchivo()" disabled style="opacity:0.5; cursor:not-allowed;">🔬 Analizar con VirusTotal</button>
+          <button class="btn-secundario" onclick="limpiarArchivo()">🗑️ Limpiar</button>
+        </div>
+        <div class="resultado-archivo" id="resultado-archivo" style="margin: 14px 0 0;"></div>
       </div>
-      <div class="progreso-wrap" id="progresoWrap">
-        <div class="progreso-label" id="progresoLabel">Enviando a VirusTotal...</div>
-        <div class="progreso-bar-bg"><div class="progreso-bar" id="progresoBar"></div></div>
+
+      <!-- ZONA OCR -->
+      <div id="zonaOCR" style="display:none;">
+        <div class="zona-drop" id="zonaDropOCR" onclick="document.getElementById('inputImagenOCR').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dragDropOCR(event)">
+          <div class="zona-drop-icono">🖼️</div>
+          <div class="zona-drop-titulo">Arrastra la imagen del mensaje aquí o haz clic</div>
+          <div class="zona-drop-sub">Formatos: .jpg .jpeg .png · El sistema leerá el texto automáticamente</div>
+        </div>
+        <div class="archivo-seleccionado" id="imagenSeleccionada">
+          <div class="archivo-icono" id="imagenIcono">🖼️</div>
+          <div class="archivo-info">
+            <div class="archivo-nombre" id="imagenNombre">—</div>
+            <div class="archivo-tamano" id="imagenTamano">—</div>
+          </div>
+        </div>
+        <div class="fila-botones" style="margin-top:14px;">
+          <button class="btn-primario" id="btnAnalizarOCR" onclick="analizarImagenOCR()" disabled style="opacity:0.5; cursor:not-allowed;">🔍 Leer y Analizar Imagen</button>
+          <button class="btn-secundario" onclick="limpiarOCR()">🗑️ Limpiar</button>
+        </div>
+        <div class="texto-extraido-box" id="textoExtraido">
+          <div class="texto-extraido-label">📝 Texto leído de la imagen:</div>
+          <div class="texto-extraido-contenido" id="textoExtraidoContenido"></div>
+        </div>
+        <div class="resultado-area" id="resultado-ocr" style="margin: 14px 0 0;"></div>
       </div>
-      <div class="fila-botones">
-        <button class="btn-primario" id="btnAnalizarArchivo" onclick="analizarArchivo()" disabled style="opacity:0.5; cursor:not-allowed;">🔬 Analizar con VirusTotal</button>
-        <button class="btn-secundario" onclick="limpiarArchivo()">🗑️ Limpiar</button>
-      </div>
+
     </div>
-    <div class="resultado-archivo" id="resultado-archivo" style="margin: 0 26px 24px;"></div>
   </div>
 
   <!-- PANTALLA 3: ANTIVIRUS -->
@@ -168,7 +206,7 @@
         <div class="manual-sec-titulo">🤔 ¿Para qué sirve esta herramienta?</div>
         <div class="manual-caja azul">
           <p>Si le llega un mensaje raro por <strong>WhatsApp, correo o SMS</strong>, pégalo aquí y te decimos en segundos si es una <strong>ESTAFA</strong> o es <strong>SEGURO</strong>.</p>
-          <p>También puedes subir archivos sospechosos para verificarlos antes de abrirlos.</p>
+          <p>También puedes subir archivos o imágenes de pantallazos sospechosos para verificarlos antes de actuar.</p>
         </div>
       </div>
 
@@ -189,6 +227,17 @@
           <div class="manual-paso"><span class="paso-num">3</span><span class="paso-txt">Vuelva aquí y toque el recuadro grande de texto</span></div>
           <div class="manual-paso"><span class="paso-num">4</span><span class="paso-txt">Toque <strong>Pegar</strong> para poner el mensaje ahí</span></div>
           <div class="manual-paso"><span class="paso-num">5</span><span class="paso-txt">Toque el botón azul <strong>🔍 Analizar Mensaje</strong> y espere el resultado</span></div>
+        </div>
+      </div>
+
+      <div class="manual-seccion">
+        <div class="manual-sec-titulo">🖼️ ¿Cómo analizar un pantallazo?</div>
+        <div class="manual-pasos">
+          <div class="manual-paso"><span class="paso-num">1</span><span class="paso-txt">Toque el botón <strong>📁 Analizar Archivo</strong> en el menú de arriba</span></div>
+          <div class="manual-paso"><span class="paso-num">2</span><span class="paso-txt">Toque la pestaña <strong>🔍 Leer Imagen con OCR</strong></span></div>
+          <div class="manual-paso"><span class="paso-num">3</span><span class="paso-txt">Toque el recuadro azul punteado y seleccione el pantallazo del mensaje</span></div>
+          <div class="manual-paso"><span class="paso-num">4</span><span class="paso-txt">Toque <strong>🔍 Leer y Analizar Imagen</strong> y espere el resultado</span></div>
+          <div class="manual-paso"><span class="paso-num">5</span><span class="paso-txt">El sistema leerá el texto de la imagen y lo analizará automáticamente</span></div>
         </div>
       </div>
 
@@ -214,8 +263,8 @@
         <div class="manual-sec-titulo">📁 ¿Cómo analizar un archivo?</div>
         <div class="manual-pasos">
           <div class="manual-paso"><span class="paso-num">1</span><span class="paso-txt">Toque el botón <strong>📁 Analizar Archivo</strong> en el menú de arriba</span></div>
-          <div class="manual-paso"><span class="paso-num">2</span><span class="paso-txt">Toque el recuadro azul punteado para buscar el archivo</span></div>
-          <div class="manual-paso"><span class="paso-num">3</span><span class="paso-txt">Seleccione el archivo que quiere verificar</span></div>
+          <div class="manual-paso"><span class="paso-num">2</span><span class="paso-txt">Asegúrese de estar en la pestaña <strong>🛡️ Analizar Archivo (VirusTotal)</strong></span></div>
+          <div class="manual-paso"><span class="paso-num">3</span><span class="paso-txt">Toque el recuadro azul punteado para buscar el archivo</span></div>
           <div class="manual-paso"><span class="paso-num">4</span><span class="paso-txt">Toque <strong>🔬 Analizar con VirusTotal</strong> y espere hasta 1 minuto</span></div>
           <div class="manual-paso"><span class="paso-num">5</span><span class="paso-txt"><strong>ROJO</strong> = No abra el archivo. &nbsp;<strong>VERDE</strong> = Está limpio y es seguro.</span></div>
         </div>
@@ -243,18 +292,15 @@
         </div>
       </div>
 
-      <!-- BOTÓN DESCARGAR MANUAL -->
-<div class="manual-seccion">
-  <div class="manual-sec-titulo">📥 Descargar Manual</div>
-  <div class="manual-caja azul" style="text-align:center; padding: 20px;">
-    <p style="margin-bottom:14px;">Descarga el manual completo en PDF para tenerlo siempre a mano 📄</p>
-    <a href="/Estilos/Manual_Instructivo.pdf" download>
-      <button class="btn-primario" style="margin: 0 auto;">
-        📥 Descargar Manual PDF
-      </button>
-    </a>
-  </div>
-</div>
+      <div class="manual-seccion">
+        <div class="manual-sec-titulo">📥 Descargar Manual</div>
+        <div class="manual-caja azul" style="text-align:center; padding: 20px;">
+          <p style="margin-bottom:14px;">Descarga el manual completo en PDF para tenerlo siempre a mano 📄</p>
+          <a href="/Estilos/Manual_Instructivo.pdf" download>
+            <button class="btn-primario" style="margin: 0 auto;">📥 Descargar Manual PDF</button>
+          </a>
+        </div>
+      </div>
 
     </div>
   </div>

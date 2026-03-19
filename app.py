@@ -1,16 +1,16 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_from_directory
 import re
 import requests
 import os
+from PIL import Image
+import pytesseract
+import io
 
 # ============================================================
 #   CIBERALERTA CUNDINAMARCA - Servidor Flask
-#   Con integracion de VirusTotal API
+#   Con integracion de VirusTotal API + OCR para imagenes
 #   Proyecto de finalizacion - Bootcamp Ciberseguridad
 # ============================================================
-
-from flask import Flask, render_template, request, jsonify, send_from_directory
-import os
 
 app = Flask(__name__)
 
@@ -23,19 +23,18 @@ def funcion(filename):
     return send_from_directory('Funcion', filename)
 
 # ---------- CONFIGURACION VIRUSTOTAL ----------
-# Aqui si o si toca reemplazar esto con la API Key de virustotal.com
 VIRUSTOTAL_API_KEY = os.environ.get("VIRUSTOTAL_API_KEY", "")
 VIRUSTOTAL_URL_SCAN  = "https://www.virustotal.com/api/v3/urls"
 VIRUSTOTAL_FILE_SCAN = "https://www.virustotal.com/api/v3/files"
 
 # ---------- BASE DE CONOCIMIENTO ----------
 PALABRAS_PELIGROSAS = [
-    "secuestrado", "secuestrada", "me tienen", "rescate", 
+    "secuestrado", "secuestrada", "me tienen", "rescate",
     "no me hagan", "no le hagan", "pague o", "si no paga",
     "tienen a su", "tenemos a su", "lo tenemos", "la tenemos",
     "200 mil", "500 mil", "transferir", "consignar urgente",
-    "no llame a la policia", "no avise", "si avisa"
-    "dar dinero","robo","ganaste", "gano", 
+    "no llame a la policia", "no avise", "si avisa",
+    "dar dinero", "robo", "ganaste", "gano",
     "premio", "felicitaciones has sido seleccionado",
     "urgente", "inmediatamente", "cuenta bloqueada", "cuenta suspendida",
     "verificar cuenta", "haz clic", "clic aqui",
@@ -57,8 +56,7 @@ PATRONES_DOMINIOS_FALSOS = [
     r"gov\.co\.", r"dian-", r"g00gle", r"faceb00k",
 ]
 
-
-# ---------- FUNCION VIRUSTOTAL ----------
+# ---------- FUNCIONES VIRUSTOTAL ----------
 def verificar_url_virustotal(url):
     try:
         headers = {"x-apikey": VIRUSTOTAL_API_KEY, "Content-Type": "application/x-www-form-urlencoded"}
@@ -66,7 +64,10 @@ def verificar_url_virustotal(url):
         if response.status_code != 200:
             return {"error": "No se pudo conectar con VirusTotal"}
         analisis_id = response.json()["data"]["id"]
-        resultado = requests.get(f"https://www.virustotal.com/api/v3/analyses/{analisis_id}", headers={"x-apikey": VIRUSTOTAL_API_KEY}, timeout=10)
+        resultado = requests.get(
+            f"https://www.virustotal.com/api/v3/analyses/{analisis_id}",
+            headers={"x-apikey": VIRUSTOTAL_API_KEY}, timeout=10
+        )
         stats = resultado.json()["data"]["attributes"]["stats"]
         maliciosos = stats.get("malicious", 0)
         sospechosos = stats.get("suspicious", 0)
@@ -84,7 +85,10 @@ def verificar_archivo_virustotal(archivo_bytes, nombre_archivo):
         if response.status_code != 200:
             return {"error": f"Error al subir el archivo (codigo {response.status_code})"}
         analisis_id = response.json()["data"]["id"]
-        resultado = requests.get(f"https://www.virustotal.com/api/v3/analyses/{analisis_id}", headers={"x-apikey": VIRUSTOTAL_API_KEY}, timeout=30)
+        resultado = requests.get(
+            f"https://www.virustotal.com/api/v3/analyses/{analisis_id}",
+            headers={"x-apikey": VIRUSTOTAL_API_KEY}, timeout=30
+        )
         stats = resultado.json()["data"]["attributes"]["stats"]
         maliciosos = stats.get("malicious", 0)
         sospechosos = stats.get("suspicious", 0)
@@ -102,7 +106,7 @@ def analizar_mensaje(texto):
     resultado_vt = None
 
     palabras_encontradas = [p for p in PALABRAS_PELIGROSAS if p in texto_lower]
-    palabras_sin_bancos = [p for p in palabras_encontradas if p not in ["nequi","daviplata","bancolombia"]]
+    palabras_sin_bancos = [p for p in palabras_encontradas if p not in ["nequi", "daviplata", "bancolombia"]]
     if len(palabras_sin_bancos) >= 3:
         puntaje += 3
         razones.append(f"Contiene {len(palabras_sin_bancos)} frases tipicas de estafa: '{palabras_sin_bancos[0]}', '{palabras_sin_bancos[1]}'...")
@@ -125,7 +129,7 @@ def analizar_mensaje(texto):
         if url.startswith("http://"):
             puntaje += 1
             razones.append("El enlace NO es seguro (no tiene https).")
-        if VIRUSTOTAL_API_KEY != "TU_API_KEY_AQUI":
+        if VIRUSTOTAL_API_KEY:
             vt = verificar_url_virustotal(url)
             if "error" not in vt:
                 resultado_vt = vt
@@ -138,17 +142,17 @@ def analizar_mensaje(texto):
                 else:
                     razones.append(f"VirusTotal: Enlace analizado por {vt['total']} antivirus y parece limpio.")
 
-    for u in ["ahora mismo","hoy vence","expira hoy","ultimo dia","caduca","caduque"]:
+    for u in ["ahora mismo", "hoy vence", "expira hoy", "ultimo dia", "caduca", "caduque"]:
         if u in texto_lower:
             puntaje += 2
             razones.append(f"Crea urgencia falsa con '{u}'. Los estafadores presionan para que no pienses.")
             break
-    for dato in ["cedula","numero de cuenta","datos bancarios","clave","contrasena","pin"]:
+    for dato in ["cedula", "numero de cuenta", "datos bancarios", "clave", "contrasena", "pin"]:
         if dato in texto_lower:
             puntaje += 3
             razones.append(f"Pide informacion personal ('{dato}'). Ninguna entidad legitima pide esto por mensaje.")
             break
-    for p in ["millones","miles de pesos","iphone","televisor","carro","moto"]:
+    for p in ["millones", "miles de pesos", "iphone", "televisor", "carro", "moto"]:
         if p in texto_lower:
             puntaje += 2
             razones.append(f"Promete premios o dinero ('{p}'). Si suena demasiado bueno, es una estafa.")
@@ -162,16 +166,22 @@ def analizar_mensaje(texto):
     else:
         nivel = "peligroso"
 
-    consejos_base = ["Nunca compartas tu clave, PIN o contrasena con nadie.","Las entidades oficiales NUNCA piden datos por WhatsApp.","Antes de hacer clic, preguntale a alguien de confianza.","Si recibes un mensaje del banco, llama directamente."]
+    consejos_base = [
+        "Nunca compartas tu clave, PIN o contrasena con nadie.",
+        "Las entidades oficiales NUNCA piden datos por WhatsApp.",
+        "Antes de hacer clic, preguntale a alguien de confianza.",
+        "Si recibes un mensaje del banco, llama directamente."
+    ]
     if nivel == "peligroso":
-        consejos = ["NO respondas este mensaje.","NO hagas clic en ningun enlace.","NO compartas este mensaje.","Bloquea y reporta al remitente.","Si ya hiciste clic, cambia tus contrasenas."] + consejos_base
+        consejos = ["NO respondas este mensaje.", "NO hagas clic en ningun enlace.", "NO compartas este mensaje.", "Bloquea y reporta al remitente.", "Si ya hiciste clic, cambia tus contrasenas."] + consejos_base
     elif nivel == "sospechoso":
-        consejos = ["No respondas todavia.","Verifica por otro medio oficial.","Si es del banco, llama al numero del reverso de tu tarjeta.","Consulta con un familiar antes de actuar."] + consejos_base
+        consejos = ["No respondas todavia.", "Verifica por otro medio oficial.", "Si es del banco, llama al numero del reverso de tu tarjeta.", "Consulta con un familiar antes de actuar."] + consejos_base
     else:
-        consejos = ["El mensaje parece seguro.","Igual, nunca compartas informacion personal.","Manten actualizadas tus contrasenas."]
+        consejos = ["El mensaje parece seguro.", "Igual, nunca compartas informacion personal.", "Manten actualizadas tus contrasenas."]
 
     return {"nivel": nivel, "razones": razones, "consejos": consejos, "virustotal": resultado_vt}
 
+# ---------- RUTAS ----------
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -192,10 +202,34 @@ def analizar_archivo():
     if archivo.filename == "":
         return jsonify({"error": "Nombre de archivo vacio"}), 400
     archivo_bytes = archivo.read()
-    if VIRUSTOTAL_API_KEY == "TU_API_KEY_AQUI":
-        return jsonify({"error": "Configura tu API Key de VirusTotal en app.py"}), 400
+    if not VIRUSTOTAL_API_KEY:
+        return jsonify({"error": "Configura tu API Key de VirusTotal"}), 400
     resultado_vt = verificar_archivo_virustotal(archivo_bytes, archivo.filename)
     return jsonify({"virustotal": resultado_vt})
+
+@app.route("/analizar-imagen", methods=["POST"])
+def analizar_imagen():
+    if "archivo" not in request.files:
+        return jsonify({"error": "No se recibio ninguna imagen"}), 400
+    archivo = request.files["archivo"]
+    extensiones_validas = {"jpg", "jpeg", "png", "bmp", "tiff", "webp"}
+    ext = archivo.filename.rsplit(".", 1)[-1].lower()
+    if ext not in extensiones_validas:
+        return jsonify({"error": "Formato no soportado. Usa JPG o PNG."}), 400
+    try:
+        imagen = Image.open(io.BytesIO(archivo.read()))
+        texto = pytesseract.image_to_string(imagen, lang="spa+eng")
+        texto = texto.strip()
+        if len(texto) < 5:
+            return jsonify({
+                "error": "No se pudo leer texto en la imagen. Intenta con una imagen mas clara.",
+                "texto_extraido": ""
+            })
+        resultado = analizar_mensaje(texto)
+        resultado["texto_extraido"] = texto
+        return jsonify(resultado)
+    except Exception as e:
+        return jsonify({"error": f"Error al procesar la imagen: {str(e)}"}), 500
 
 if __name__ == "__main__":
     import webbrowser
