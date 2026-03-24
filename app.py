@@ -28,7 +28,7 @@ VIRUSTOTAL_FILE_SCAN = "https://www.virustotal.com/api/v3/files"
 
 # ---------- BASE DE CONOCIMIENTO ----------
 PALABRAS_PELIGROSAS = [
-    "Limpieza social","secuestrado", "secuestrada", "me tienen", "rescate",
+    "limpieza social","evite","Limpieza social","secuestrado", "secuestrada", "me tienen", "rescate",
     "no me hagan", "no le hagan", "pague o", "si no paga",
     "tienen a su", "tenemos a su", "lo tenemos", "la tenemos",
     "200 mil", "500 mil", "transferir", "consignar urgente",

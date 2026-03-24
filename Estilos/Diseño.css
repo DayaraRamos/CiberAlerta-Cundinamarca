@@ -620,3 +620,21 @@ textarea:focus { border-color: #1565C0; }
 .dos .num-front { background: linear-gradient(135deg, #E8F5E9, #C8E6C9); border: 2px solid #A5D6A7; }
 .tres .num-front { background: linear-gradient(135deg, #EDE7F6, #D1C4E9); border: 2px solid #B39DDB; }
 .cuatro .num-front { background: linear-gradient(135deg, #FFF3E0, #FFE0B2); border: 2px solid #FFCC80; }
+/* ── VIDEO PRESENTACION ── */
+.video-presentacion {
+  width: 100%;
+  padding: 0 16px;
+  margin: 12px 0;
+  position: relative;
+  z-index: 1;
+}
+
+.video-presentacion video {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  position: relative;
+  z-index: 1;
+  opacity: 1;
+  object-fit: cover;
+}
